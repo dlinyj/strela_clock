@@ -41,14 +41,16 @@ ISR(TIMER1_COMPA_vect) {
 	static uint8_t pos_neg = 0;
 	static uint8_t sending = 0;
 	if (sending) {
-		sending = 0;
-		digitalWrite(POS_SIG, HIGH);
-		digitalWrite(NEG_SIG, HIGH);
+		sending--;
+		if(0 == sending) {
+			digitalWrite(POS_SIG, HIGH);
+			digitalWrite(NEG_SIG, HIGH);
+		}
 	}
 	seconds++;
 	if (seconds == 60) {
 		seconds = 0;
-		sending++;
+		sending=2;
 		if (pos_neg) {
 			digitalWrite(POS_SIG, LOW);
 			pos_neg = 0;
